@@ -218,7 +218,7 @@ class adminDashboard extends Controller
                 array_push($actionLog, "Ignorant usuari " . $user->email . " perque ja te un taller assignat");
                 continue;
             }
-            $workshops = Workshop::withCount("users")->AddressedTo($user->courseName())->get()->sortBy("users_count");
+            $workshops = Workshop::withCount("users")->get()->sortBy("users_count");
             $choices = $user->workshopChoices;
 
             $workshop1 = $workshops->where("id", $choices->first_choice)->first();
