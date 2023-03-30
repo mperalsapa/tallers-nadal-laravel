@@ -18,15 +18,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('surname')->nullable();
             $table->string('email')->unique();
-            $table->enum("stage", ["ESO", "BAT", "FPB", "ASIX", "DAW", "SMX"])->nullable();
+            $table->enum("stage", ["ESO", "BATX", "FPB", "ASIX", "DAW", "SMX"])->nullable();
             $table->smallInteger("course")->nullable();
             $table->char("group")->nullable();
             $table->enum("role", ["Alumne", "Profesor"])->default("Alumne");
             $table->enum("authority", ["Usuari", "Administrador", "Super Administrador"])->default("Usuari");
-            $table->smallInteger("firstChoice")->nullable();
-            $table->smallInteger("secondChoice")->nullable();
-            $table->smallInteger("thirdChoice")->nullable();
-            $table->smallInteger("tallerAssigned")->nullable();
+            // $table->unsignedInteger("assignedWorkshop")->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -44,6 +44,11 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\TN_ensureUserAuth::class,
             \App\Http\Middleware\TN_ensureIsAdmin::class,
         ],
+
+        'superAdminProtected' => [
+            \App\Http\Middleware\TN_ensureUserAuth::class,
+            \App\Http\Middleware\TN_ensureIsSuperAdmin::class,
+        ],
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',

@@ -11,8 +11,24 @@ class AdminSettingSeeder extends Seeder
     public function run()
     {
         AdminSetting::create([
-            "name" => "Inici de seleccio",
-            "value" => "2023-02-24T06:23",
+            "name" => "startingDate",
+            "fancyName" => "Inici de seleccio",
+            "value" => "2023-04-01T06:23",
+        ]);
+        AdminSetting::create([
+            "name" => "endingDate",
+            "fancyName" => "Fi de seleccio",
+            "value" => "2023-04-10T06:23",
+        ]);
+        AdminSetting::create([
+            "name" => "checkedUserAsignedWorkshops",
+            "fancyName" => "Usuaris amb taller assignat",
+            "value" => 0,
+        ]);
+        AdminSetting::create([
+            "name" => "checkedUserChoseWorkshops",
+            "fancyName" => "Usuaris amb eleccions de taller",
+            "value" => 0,
         ]);
     }
 }

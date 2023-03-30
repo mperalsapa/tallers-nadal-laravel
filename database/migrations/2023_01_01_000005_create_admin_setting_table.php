@@ -17,6 +17,7 @@ return new class extends Migration
         Schema::create('admin_setting', function (Blueprint $table) {
             $table->increments("id");
             $table->string("name");
+            $table->string("fancyName");
             $table->string("value");
             $table->timestamps();
         });

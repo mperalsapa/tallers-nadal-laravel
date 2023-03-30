@@ -14,19 +14,26 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('taller', function (Blueprint $table) {
+        Schema::create("workshop", function (Blueprint $table) {
             $table->increments("id");
             $table->string("name", 200);
             $table->unsignedInteger("user_id");
+            $table->string("assistants")->nullable();
+            $table->string("manager")->nullable();
             $table->string("description", 1000);
             $table->string("addressed_to")->nullable();
-            $table->integer('max_students');
-            $table->string('material', 128);
-            $table->string('observations', 1024)->nullable();
-            $table->date('created');
+            $table->integer("max_students");
+            $table->string("material", 128);
+            $table->string("observations", 1024)->nullable();
+            $table->string("place")->nullable();
+            $table->year("created");
             $table->timestamps();
             $table->foreign("user_id")->references("id")->on("user")->onDelete("cascade");
         });
+
+        // Schema::table('user', function (Blueprint $table) {
+        //     $table->foreign("assignedWorkshop")->references("id")->on("workshop")->onDelete("cascade");
+        // });
     }
 
     /**
@@ -36,6 +43,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taller');
+        Schema::dropIfExists("workshop");
     }
 };

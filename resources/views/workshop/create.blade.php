@@ -19,10 +19,18 @@
 
 <body>
     @include('common.navbar')
-    <div class="container">
-        <form action="{{ route('storeTaller') }}" method="post" class="col-8 mx-auto p-5">
+    <div class="container d-flex gap-3 py-5">
+        <form action="{{ route('storeWorkshop') }}" method="post" class="col-8">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('index') }}">Tallers</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Crear taller</li>
+                </ol>
+            </nav>
             @csrf
-            <input type="hidden" name="taller-id" id="taller-id" value="{{ isset($taller->id) ? $taller->id : '' }}">
+            <input type="hidden" name="workshop-id" id="workshop-id"
+                value="{{ isset($workshop->id) ? $workshop->id : '' }}">
             @if ($errors->any())
                 <div class="alert alert-danger mt-3" role="alert">
                     <h3>S'han trobat els seguents errors</h3>
@@ -32,40 +40,51 @@
             <div class="mb-3">
                 <label for="name" class="form-label">Nom del taller</label>
                 <input type="text" class="form-control" id="name" name="name" placeholder="Nom del taller"
-                    value="{{ $taller->name ?? old('name') }}">
+                    value="{{ $workshop->name ?? old('name') }}">
             </div>
             <div class="mb-3">
                 <label for="max_students" class="form-label">Numero de participants</label>
                 <input class="form-control" id="max_students" name="max_students" type="number" min="1"
-                    max="60" value="{{ $taller->max_students ?? old('max_students') }}">
-
+                    max="60" value="{{ $workshop->max_students ?? old('max_students') }}">
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Descripcio del taller</label>
-                <textarea class="form-control" id="description" name="description" rows="3">{{ $taller->description ?? old('description') }}</textarea>
-
+                <textarea class="form-control" id="description" name="description" rows="3">{{ $workshop->description ?? old('description') }}</textarea>
             </div>
             <div class="mb-3">
                 <label for="material" class="form-label">Material necessari</label>
-                <textarea class="form-control" id="material" name="material" rows="3">{{ $taller->material ?? old('material') }}</textarea>
-
+                <textarea class="form-control" id="material" name="material" rows="3">{{ $workshop->material ?? old('material') }}</textarea>
             </div>
             <div class="mb-3">
                 <label for="observation" class="form-label">Observacions</label>
-                <textarea class="form-control" id="observation" name="observation" rows="3">{{ $taller->observations ?? old('observation') }}</textarea>
-
+                <textarea class="form-control" id="observation" name="observation" rows="3">{{ $workshop->observations ?? old('observation') }}</textarea>
             </div>
+            @if (Auth::User()->isAdmin())
+                <div class="mb-3">
+                    <label for="assistants" class="form-label">Ajudants</label>
+                    <textarea class="form-control" id="assistants" name="assistants" rows="3">{{ $workshop->assistants ?? old('assistants') }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="manager" class="form-label">Responsable</label>
+                    <textarea class="form-control" id="manager" name="manager" rows="3">{{ $workshop->manager ?? old('manager') }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="place" class="form-label">Aula / Espai</label>
+                    <textarea class="form-control" id="place" name="place" rows="3">{{ $workshop->place ?? old('place') }}</textarea>
+                </div>
+            @endif
+
+
             <div>
                 <label for="addressed-to" class="form-label">Adreçat a</label>
 
                 <div class=" d-flex flex-wrap">
-
                     <div class="form-check col p-0 text-nowrap">
-                        <select class="form-select" id="multiple-select-field" data-placeholder="Choose anything"
+                        <select class="form-select" id="multiple-select-field" data-placeholder="Seleccionar curs"
                             name="multiselect[]" multiple>
                             @foreach (Auth::User()->getCourseList() as $key => $value)
                                 <option value="{{ $key }}"
-                                    @if (old('multiselect') || isset($taller)) {{ in_array($key, old('multiselect') ? old('multiselect') : $taller->addressed_to) ? 'selected' : '' }} @endif>
+                                    @if (old('multiselect') || isset($workshop)) {{ in_array($key, old('multiselect') ? old('multiselect') : $workshop->addressed_to) ? 'selected' : '' }} @endif>
                                     {{ $value }}</option>
                             @endforeach
                         </select>
@@ -73,15 +92,24 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary mt-3" value="{{ isset($taller->id) ? 'update' : 'new' }}"
-                name="submit">{!! isset($taller->id) ? '<i class="bi bi-pencil"></i> Actualitzar' : '<i class="bi bi-save"></i> Guardar' !!}</button>
+            <button type="submit" class="btn btn-primary mt-3" value="{{ isset($workshop->id) ? 'update' : 'new' }}"
+                name="submit">{!! isset($workshop->id) ? '<i class="bi bi-pencil"></i> Actualitzar' : '<i class="bi bi-save"></i> Guardar' !!}</button>
 
-            @if (isset($taller->id))
+            @if (isset($workshop->id))
                 <button type="submit" class="btn btn-danger mt-3" value="delete" name="submit"><i
-                        class="bi bi-trash"></i>
-                    Esborrar</button>
+                        class="bi bi-trash"></i> Esborrar</button>
             @endif
         </form>
+        <div class="col">
+
+            <div class="d-flex flex-column bg-light rounded p-2">
+                <h2 class="text-center">Administració</h2>
+                <a class="btn btn-primary mt-3" href="{{ route('showWorkshopsHistory') }}">Copiar del historic de
+                    tallers</a>
+
+            </div>
+
+        </div>
     </div>
     @include('common.bootstrap-body')
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>

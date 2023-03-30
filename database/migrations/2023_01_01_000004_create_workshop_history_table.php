@@ -14,15 +14,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('taller_history', function (Blueprint $table) {
+        Schema::create('workshop_history', function (Blueprint $table) {
             $table->increments("id");
-            $table->string("name", 200);
-            $table->string("description", 1000);
+            $table->string("name");
+            $table->string("creator");
+            $table->string("description");
             $table->string("addressed_to")->nullable();
             $table->integer('max_students');
-            $table->string('material', 128);
-            $table->string('observations', 1024)->nullable();
-            $table->date('created');
+            $table->string('material');
+            $table->string('observations')->nullable();
+            $table->year('created');
             $table->timestamps();
         });
     }
@@ -34,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taller_history');
+        Schema::dropIfExists('workshop_history');
     }
 };

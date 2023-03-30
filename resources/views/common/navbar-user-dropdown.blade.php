@@ -4,20 +4,16 @@
             <i class="bi bi-person-fill"></i>
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Perfil</a></li>
+            {{-- <li><a class="dropdown-item" href="#">Perfil</a></li> --}}
             <li><a class="dropdown-item" href="{{route("logout")}}">Tancar sessió</a></li>
             @if(Auth::user()->isAdmin())
             <li>
                 <hr class="dropdown-divider">
             </li>
             <li>
-
                 <a class="dropdown-item" href="{{route("adminDashboardIndex")}}">Administració</a>
-
             </li>
             @endif
-
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
         </ul>
     </li>
 </ul>

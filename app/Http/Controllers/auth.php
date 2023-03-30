@@ -13,7 +13,9 @@ class auth extends Controller
 {
     public function index(Request $request)
     {
-
+        // if (!session()->has('url.intended')) {
+        //     session(['url.intended' => url()->previous()]);
+        // }
         if (FacadesAuth::check()) {
             return redirect()->route("index");
         }
@@ -49,8 +51,12 @@ class auth extends Controller
             return \redirect()->route("login")->with("statusMessage", $statusMessage);
         }
 
-        // FacadesAuth::loginUsingId($user->id);
+
         FacadesAuth::login($user);
+        if (session()->has('url.intended')) {
+            // dd(session("url.intended"));
+            return redirect(session("url.intended"));
+        }
         return redirect()->route("index");
     }
 }

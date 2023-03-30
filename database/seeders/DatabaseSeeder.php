@@ -1,10 +1,11 @@
 <?php
 
 use Database\Seeders\AdminSettingSeeder;
-use Database\Seeders\CourseSeeder;
-use Database\Seeders\RoleSeeder;
-use Database\Seeders\TallerSeeder;
+
 use Database\Seeders\UserSeeder;
+use Database\Seeders\WorkshopChoiceSeeder;
+use Database\Seeders\WorkshopHistorySeeder;
+use Database\Seeders\WorkshopSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,7 +20,9 @@ class DatabaseSeeder extends Seeder
         // $this->call(UsersTableSeeder::class);
         // $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
-        $this->call(TallerSeeder::class);
+        $this->call(WorkshopSeeder::class);
+        $this->call(WorkshopChoiceSeeder::class);
         $this->call(AdminSettingSeeder::class);
+        $this->call(WorkshopHistorySeeder::class);
     }
 }

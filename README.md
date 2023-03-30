@@ -1,66 +1,96 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Tallers de nadal
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Autor: Marc Peral
 
-## About Laravel
+Aquest projecte te com a proposit fer servir el framework de php Laravel per generar un portal web on poder crear i apuntar-se a tallers de nadal. Els alumnes i professors podran crear tallers, i una vegada ha passat un periode de temps, es podran apuntar a altres tallers.
+Tambe existeix la figura del Super Administrador. Aquesta figura no consta com Alumne o Professor, sino que es per administrar el lloc web i assignar alguns usuaris com administradors.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Aquest projecte te en compte que els tallers de nadal es fan 1 vegada al any (nadal) per lo tant, es tindria en compte un funcionament per etapes, es a dir:
+- Insercio de nous usuaris.
+    S'haurien d'inserir nous usuaris ja que l'anterior temporada es van esborrar. Aixo es degut a que a l'hora d'assignar tallers s'agafen tots els usuaris de la base de dades.
+    Per inserir els usuaris, s'ha d'afegir un fitxer CSV en la ruta tallers-nadal-laravel/storage/usuaris.csv
+    El fitxer ha de tenir el seguent nom "usuaris.csv", i ha de tenir el format ```Email,Etapa,Curs,Grup,Cognoms,Nom```, aquest seria un fitxer d'exemple:
+    ```
+    a.alumne1@sapalomera.cat,ESO,1,A,Cognom1 Cognom1,Nom1
+    a.alumne2@sapalomera.cat,ESO,1,C,Cognom2 Cognom2,Nom2
+    a.alumne3@sapalomera.cat,ESO,2,A,Cognom3 Cognom3,Nom3
+    ```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Periode de creacio de tallers:
+    Usuaris i admins poden crear tallers i modificar-los.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Periode d'eleccio de tallers: 
+    Finalitzat el periode de creacio, comença el de seleccio de tallers. 
 
-## Learning Laravel
+    - Usuaris: seleccionen tallers. A l'hora de seleccionar un taller, els alumnes només poden veure tallers que son assignats als seus cursos, mentre que els professors poden veure tots els tallers.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    - Admin: En cas de tenir un taller amb molta demanda i tenim mes recursos per fer un altre, un administrador pot crear mes tallers o clonar-los de tallers existents o del historic.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- Periode final
+    - Generacio de seleccions
+        - Automatic
+        En cas de tenir alumnes que no han generat seleccions, es pot realitzar de manera automatica (tot i que es funcional, s'hauria de realitzar testos per comprovar que sigui 100% util en un entorn real, ja que si es fa servir la generacio automatica, no es pot tornar enrere).
+        
+        La seleccio automatica no te en compte si hi ha massa seleccions d'un taller. Aixo podria produir un error a l'hora de generar les assignacions, pero com aquest cas podria passar naturalment, no s'ha tingut en compte a l'hora de programar-ho. S'hauria de fer una comprovacio a l'hora de generar les seleccions automatiques.
+        
+        - Manual
+        Tambe existeix la opcio d'anar alumne/professor per alumne/professor afegint/modificant les eleccions de taller, una per una.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    - Generacio d'assignacions
+        - Automatic
+        La generacio d'assignacions es pot fer automatica, pero requereix que tots els usuaris que son disponibles tinguin les 3 seleccions de tallers, per aquesta rao existeix la generacio de seleccions automatica.
+        En cas de no tenir suficients espais en un taller per les seleccions actuals, el sistema ho indicara en un log per que l'administrador canvii manualment. Tambe es podria automatitzar aquesta tasca, pero això s'hauria de fer mes endavant.
+        
+        - Manual
+        De la mateixa manera que amb les eleccions, tambe es pot canviar/afegir l'assignacio del taller d'alumnes/professors
+    - Generacio d'informes
+        Els informes son generats amb taules en una pagina web. Es presenta un botó que indica "Imprimir" i genera una vista d'impressió amb les taules corresponents amb l'informe generat.
+        - Informe de tallers
+        Aquest informe genera taules la qual cadascuna es un taller, i les files son els alumnes que han sigut assignats en aquest taller.
+        - Informe de material
+        Aquest informe genera una llista de tallers amb els corresponents materials.
+        - Informe de Usuaris
+        Aquest informe genera una llista d'usuaris amb les seves eleccions (1º, 2º, 3º) i la seva assignacio de taller.
+    - Emmagatzemament de tallers historics
+    Una vegada finalitzada la generacio de informes, podem enviar els tallers a l'historic.
+    - Eliminacio de usuaris
+    Enviats els tallers al historic, podem esborrar els usuaris i s'hauria completat un cicle.
 
-## Laravel Sponsors
+# Com funciona
+## Base de dades
+Configurar en el fitxer .env la connexio amb la base de dades.
+Executar la seguent comanda per crear les taules a la base de dades i afegir dades inicials per fer una previsualitzacio
+```
+php artisan migrate:fresh --seed
+```
+## Domini
+L'entorn de desenvolupament fa servir el domini ```dev.tallers-nadal.mperalsapa.cf```, per lo que si es vol fer servir un altre domini, s'ha de canviar en el fitxer .env.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Inici de sessio amb Google
+De la mateixa manera que s'ha de canviar el domini, s'han de canviar les credencials de l'api de Google, i tambe el callback, corresponent al nou domini i a la configuracio de Google.
 
-### Premium Partners
+# Observacions
+## Laravel
+S'hauria de millorar la manera en la que s'implementa amb laravel.
+Per exemple, fer servir el sistema de plantilles mes extensivament. Aplicar conceptes com els "ENUM" en comptes de afegir "hardcoded" certes variables, etc...
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+## Tallers
+Un alumne només pot fer un taller, mentre que un administrador, pot fer mes d'un taller. Aixo es degut a que si ets administrador, has de poder generar duplicats de tallers basats en l'historic. Si no fos així, no es podrien duplicar, només copiarien de l'historic al taller que ja existeix o es crearia un de nou.
 
-## Contributing
+Hauria estat be implementar un filtre com el que existeix en el panell d'administracio. Com ja s'ha realitzat una implementacio seria facil copiar i enganxar la implementacio ja existent.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Historic
+Podem crear tallers basats en els que hi ha en l'historic. Tambe podem esborrar tallers de l'historic. Pero no podem modificar-los. Tambe hauria estat be afegir la vista de modificacio.
 
-## Code of Conduct
+## Desplegament
+Actualment degut a la manca de coneixements amb laravel, no he trobat una manera eficient de desplegar el projecte. S'hauria de millorar com s'envia a "Prod" de la manera mes automatica possible, en comptes de haver de copiar els fitxers o de executar comandes per que la base de dades s'actualitzi.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# TODO
+M P, [14/03/2023 18:58]
+✔?  Informes
+    ✖  Informe des de un taller
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+M P, [15/03/2023 16:27]
+✖  Filtre de tallers en la seleccio de tallers des de la seccio admin
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
